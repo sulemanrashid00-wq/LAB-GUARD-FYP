@@ -12,13 +12,14 @@ class AuditLogBase(BaseModel):
 
 
 class AuditLogCreate(AuditLogBase):
-    user_id: Optional[int] = None
+    user_id: Optional[Any] = None
 
 
 class AuditLogResponse(AuditLogBase):
     model_config = ConfigDict(from_attributes=True)
 
-    id: int
-    user_id: Optional[int] = None
+    id: Any
+    user_id: Optional[Any] = None
     created_at: datetime
+
 

@@ -1,5 +1,5 @@
 from datetime import datetime, timezone
-from typing import List, Optional
+from typing import List, Optional, Any
 from sqlalchemy.orm import Session
 from app.models.command import DeviceCommand
 from app.models.device import Device
@@ -9,7 +9,7 @@ from app.core.errors import NotFoundError
 
 class CommandService:
     @staticmethod
-    def issue_command(db: Session, data: CommandCreate, user_id: Optional[int] = None) -> DeviceCommand:
+    def issue_command(db: Session, data: CommandCreate, user_id: Optional[Any] = None) -> DeviceCommand:
         device = db.query(Device).filter(Device.id == data.device_id).first()
         if not device:
             raise NotFoundError("Device", data.device_id)
@@ -28,14 +28,14 @@ class CommandService:
         return command
 
     @staticmethod
-    def get_device_commands(db: Session, device_id: int, status: Optional[str] = None) -> List[DeviceCommand]:
+    def get_device_commands(db: Session, device_id: Any, status: Optional[str] = None) -> List[DeviceCommand]:
         query = db.query(DeviceCommand).filter(DeviceCommand.device_id == device_id)
         if status:
             query = query.filter(DeviceCommand.status == status)
         return query.order_by(DeviceCommand.created_at.desc()).all()
 
     @staticmethod
-    def get_pending_commands(db: Session, device_id: int) -> List[DeviceCommand]:
+    def get_pending_commands(db: Session, device_id: Any) -> List[DeviceCommand]:
         return (
             db.query(DeviceCommand)
             .filter(DeviceCommand.device_id == device_id, DeviceCommand.status == "pending")
@@ -44,7 +44,8 @@ class CommandService:
         )
 
     @staticmethod
-    def update_command_status(db: Session, command_id: int, data: CommandStatusUpdate) -> DeviceCommand:
+    def update_command_status(db: Session, command_id: Any, data: CommandStatusUpdate) -> DeviceCommand:
+
         command = db.query(DeviceCommand).filter(DeviceCommand.id == command_id).first()
         if not command:
             raise NotFoundError("DeviceCommand", command_id)

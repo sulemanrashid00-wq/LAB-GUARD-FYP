@@ -5,7 +5,7 @@ from pydantic import BaseModel, ConfigDict
 
 class EventBase(BaseModel):
     lab_id: int
-    device_id: Optional[int] = None
+    device_id: Optional[Any] = None
     event_type: str
     severity: str = "info"  # info, low, medium, high, critical
     description: str
@@ -19,6 +19,7 @@ class EventCreate(EventBase):
 class EventResponse(EventBase):
     model_config = ConfigDict(from_attributes=True)
 
-    id: int
+    id: Any
     created_at: datetime
+
 

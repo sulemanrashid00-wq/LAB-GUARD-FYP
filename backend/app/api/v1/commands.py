@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List, Optional, Union
 from fastapi import APIRouter, Depends, status, Query
 from sqlalchemy.orm import Session
 from app.core.database import get_db
@@ -35,7 +35,7 @@ def issue_device_command(
 
 @router.get("/device/{device_id}", response_model=APIResponse[List[CommandResponse]])
 def get_device_commands(
-    device_id: int,
+    device_id: Union[str, int],
     status_filter: Optional[str] = Query(None, alias="status"),
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
@@ -49,11 +49,12 @@ def get_device_commands(
 
 @router.patch("/{command_id}/status", response_model=APIResponse[CommandResponse])
 def update_command_status(
-    command_id: int,
+    command_id: Union[str, int],
     status_update: CommandStatusUpdate,
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
+
     """
     Update command status execution outcome (e.g., executed, failed).
     """

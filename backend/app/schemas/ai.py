@@ -5,7 +5,7 @@ from pydantic import BaseModel, ConfigDict
 
 class AiInferenceRequest(BaseModel):
     lab_id: int
-    device_id: Optional[int] = None
+    device_id: Optional[Any] = None
     inference_type: str = "anomaly_detection"  # anomaly_detection, fire_hazard_prediction, occupancy_forecast
     current_telemetry: Dict[str, Any]
 
@@ -13,9 +13,10 @@ class AiInferenceRequest(BaseModel):
 class AiInferenceResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
-    id: Optional[int] = None
+    id: Optional[Any] = None
     lab_id: int
-    device_id: Optional[int] = None
+    device_id: Optional[Any] = None
+
     model_name: str
     model_version: str
     inference_type: str

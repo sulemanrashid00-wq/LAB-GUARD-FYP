@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import Optional
+from typing import Optional, Any
 from pydantic import BaseModel, ConfigDict
 
 
@@ -17,18 +17,19 @@ class AlertCreate(AlertBase):
 
 class AlertUpdate(BaseModel):
     status: Optional[str] = None  # acknowledged, resolved, dismissed
-    acknowledged_by_id: Optional[int] = None
-    resolved_by_id: Optional[int] = None
+    acknowledged_by_id: Optional[Any] = None
+    resolved_by_id: Optional[Any] = None
 
 
 class AlertResponse(AlertBase):
     model_config = ConfigDict(from_attributes=True)
 
-    id: int
+    id: Any
     status: str
-    acknowledged_by_id: Optional[int] = None
-    resolved_by_id: Optional[int] = None
+    acknowledged_by_id: Optional[Any] = None
+    resolved_by_id: Optional[Any] = None
     acknowledged_at: Optional[datetime] = None
     resolved_at: Optional[datetime] = None
     created_at: datetime
+
 

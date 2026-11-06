@@ -4,7 +4,7 @@ from pydantic import BaseModel, ConfigDict
 
 
 class CommandBase(BaseModel):
-    device_id: int
+    device_id: Any
     command_type: str  # reboot, lock_door, unlock_door, trigger_buzzer, cut_relay
     payload_json: Optional[Dict[str, Any]] = None
 
@@ -21,10 +21,11 @@ class CommandStatusUpdate(BaseModel):
 class CommandResponse(CommandBase):
     model_config = ConfigDict(from_attributes=True)
 
-    id: int
-    issued_by_id: Optional[int] = None
+    id: Any
+    issued_by_id: Optional[Any] = None
     status: str
     response_json: Optional[Dict[str, Any]] = None
     executed_at: Optional[datetime] = None
     created_at: datetime
+
 
